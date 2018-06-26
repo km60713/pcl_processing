@@ -1,0 +1,27 @@
+<launch>
+
+  <arg name="gui" default="true" />
+
+  <!-- depth_image_creator -->
+  <node name="depth_image_creator"
+        pkg="nodelet" type="nodelet"
+        args="standalone jsk_pcl/DepthImageCreator">
+    <remap from="~input" to="/zed/point_cloud/cloud_registered" />
+    <remap from="~info" to="/zed/left/camera_info_raw" />
+    <rosparam>
+      use_approximate: true
+      max_queue_size: 3
+      max_pub_queue_size: 1
+      max_sub_queue_size: 1
+    </rosparam>
+  </node>
+
+  <!-- <group if="$(arg gui)"> -->
+  <!--   <node name="rviz" -->
+  <!--         pkg="rviz" type="rviz" -->
+  <!--         args="-d $(find pcl_processing)/config/depth_image_creator.rviz"> -->
+  <!--   </node> -->
+  <!-- </group> -->
+
+  
+</launch>
