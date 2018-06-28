@@ -1,11 +1,16 @@
 <launch>
 
+  <arg name="gui" default="true" />
+
+  <!-- camera_info_publisher -->
+  <node pkg="pcl_processing" name="camera_info_publisher" type="camera_info_publisher" output="screen" />
+
   <!-- depth_image_creator -->
   <node name="depth_image_creator"
         pkg="nodelet" type="nodelet"
         args="standalone jsk_pcl/DepthImageCreator">
     <remap from="~input" to="/zed/point_cloud/cloud_registered" />
-    <remap from="~info" to="/zed/left/camera_info_raw" />
+    <remap from="~info" to="/zed/left/camera_info_new" />
     <rosparam>
       use_approximate: true
       max_queue_size: 3
@@ -15,7 +20,12 @@
   </node>
 
   <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="bridge_zed-left-camera_to_camera-info" args="0 0 0 0 0 0 1 zed_left_camera esr_1" /> -\-> -->
-  
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find pcl_processing)/config/depth_image_creator.rviz" required="true" />
-  
+
+  <group if="$(arg gui)">
+    <node name="rviz"
+          pkg="rviz" type="rviz"
+          args="-d $(find pcl_processing)/config/depth_image_creator.rviz">
+    </node>
+  </group>
+
 </launch>

@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+import rospy
+from sensor_msgs.msg import CameraInfo
+
+class CameraInfoPublisher:
+
+    def __init__(self):
+        rospy.init_node('camera_info_publisher', anonymous=False)
+        rospy.Subscriber('/zed/left/camera_info_raw', CameraInfo, self.oldInfo)
+
+    def oldInfo(self, _oldInfo):
+        _oldInfo.header.frame_id = "zed_depth_camera"
+        pub = rospy.Publisher('/zed/left/camera_info_new', CameraInfo, queue_size=10)
+        pub.publish(_oldInfo)
+
+if __name__ == '__main__':
+    try:
+        Publisher = CameraInfoPublisher()
+        rospy.spin()
+    except rospy.ROSInterruptException:
+        pass

@@ -9,6 +9,7 @@ Panels:
         - /Grid1/Offset1
         - /PointCloud21
         - /depth_image_creator1
+        - /TF1
         - /TF1/Frames1
         - /TF1/Tree1
         - /CameraInfo1
@@ -130,7 +131,7 @@ Visualization Manager:
       Enabled: true
       Image Topic: ""
       Name: CameraInfo
-      Topic: /zed/left/camera_info_raw
+      Topic: /zed/left/camera_info_new
       Unreliable: false
       Value: true
       alpha: 0.5
@@ -166,7 +167,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 13.8095121
+      Distance: 3.84596205
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
@@ -181,10 +182,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.29039821
+      Pitch: 0.130398154
       Target Frame: <Fixed Frame>
       Value: XYOrbit (rviz)
-      Yaw: 3.85538507
+      Yaw: 3.16538453
     Saved: ~
 Window Geometry:
   Displays:
