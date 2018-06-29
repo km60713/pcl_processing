@@ -1,0 +1,9 @@
+<launch>
+
+  <node name="opencv_centroid" pkg="opencv_apps" type="contour_moments" output="screen">
+    <remap from="image" to="depth_image_creator/output_image" />
+    <param name="debug_view" value="false" />
+    <param name="use_camera_info" value="false" />
+  </node>
+  
+</launch>

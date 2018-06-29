@@ -1,0 +1,8 @@
+<launch>
+
+  <node name="image_view2" pkg="image_view2" type="image_view2">
+      <remap from="image" to="opencv_centroid/image" />
+      <!-- <remap from="image_marker" to="image_view2/image_marker" /> -->
+  </node>
+
+</launch>
