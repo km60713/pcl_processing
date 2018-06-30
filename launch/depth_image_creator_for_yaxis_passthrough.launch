@@ -24,11 +24,11 @@
 
   <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="bridge_zed-left-camera_to_camera-info" args="0 0 0 0 0 0 1 zed_left_camera esr_1" /> -\-> -->
 
-  <group if="$(arg gui)">
-    <node name="rviz"
-          pkg="rviz" type="rviz"
-          args="-d $(find pcl_processing)/config/depth_image_creator.rviz">
-    </node>
-  </group>
+  <!-- <group if="$(arg gui)"> -->
+  <!--   <node name="rviz" -->
+  <!--         pkg="rviz" type="rviz" -->
+  <!--         args="-d $(find pcl_processing)/config/depth_image_creator.rviz"> -->
+  <!--   </node> -->
+  <!-- </group> -->
 
 </launch>

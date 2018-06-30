@@ -1,8 +1,12 @@
 <launch>
 
+  <!-- centroid.py -->
+  <node pkg="pcl_processing" name="centroid" type="centroid.py" output="screen" />
+
+  <!-- image_view2 -->  
   <node name="image_view2" pkg="image_view2" type="image_view2">
-      <remap from="image" to="opencv_centroid/image" />
-      <!-- <remap from="image_marker" to="image_view2/image_marker" /> -->
+    <remap from="image" to="/zed/left/image_raw_color" />
+    <remap from="image_marker" to="/centroid_image/image_marker" />
   </node>
 
 </launch>
