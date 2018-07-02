@@ -1,0 +1,13 @@
+<launch>
+
+  <node name="dilate_filtered_image"
+        pkg="nodelet" type="nodelet"
+        args="standalone jsk_perception/DilateMaskImage">
+    <remap from="~input" to="/depth_image_creator/output_image" />
+    <rosparam>
+      method: 0
+      size: 3
+    </rosparam>
+  </node>
+    
+</launch>

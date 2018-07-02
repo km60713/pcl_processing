@@ -1,34 +1,71 @@
 <launch>
 
-  <arg name="gui" default="true" />
-
+  <arg name="gui" default="false" />
+  <arg name="uncolorize" default="false" />
+  <arg name="dilate" default="true" />
+  
   <!-- path_through_filter -->
   <include file="$(find pcl_processing)/launch/sample_path_through_filter.launch" />
   
   <!-- camera_info_publisher -->
   <node pkg="pcl_processing" name="camera_info_publisher" type="camera_info_publisher" output="screen" />
 
-  <!-- depth_image_creator -->
-  <node name="depth_image_creator"
-        pkg="nodelet" type="nodelet"
-        args="standalone jsk_pcl/DepthImageCreator">
-    <remap from="~input" to="/yaxis_passthrough/output" />
-    <remap from="~info" to="/zed/left/camera_info_new" />
+  <!-- uncolorize  and  depth_image_creator -->
+  <group if="$(arg uncolorize)">
+    <node name="pointcloud_xyzrgb_to_xyz"
+          pkg="nodelet" type="nodelet"
+          args="standalone jsk_pcl_utils/PointCloudXYZRGBToXYZ">
+      <remap from="~input" to="/xaxis_passthrough/output" />
+    </node>
+    <node name="depth_image_creator"
+          pkg="nodelet" type="nodelet"
+          args="standalone jsk_pcl/DepthImageCreator">
+      <remap from="~input" to="pointcloud_xyzrgb_to_xyz/output" />
+      <remap from="~info" to="/zed/left/camera_info_new" />
     <rosparam>
       use_approximate: true
       max_queue_size: 3
       max_pub_queue_size: 1
       max_sub_queue_size: 1
     </rosparam>
-  </node>
+    </node>
+  </group>
 
-  <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="bridge_zed-left-camera_to_camera-info" args="0 0 0 0 0 0 1 zed_left_camera esr_1" /> -\-> -->
-
-  <!-- <group if="$(arg gui)"> -->
-  <!--   <node name="rviz" -->
-  <!--         pkg="rviz" type="rviz" -->
-  <!--         args="-d $(find pcl_processing)/config/depth_image_creator.rviz"> -->
-  <!--   </node> -->
-  <!-- </group> -->
+  <!-- Just depth_image_creator -->
+  <group if="$(eval uncolorize != true)">
+    <node name="depth_image_creator"
+          pkg="nodelet" type="nodelet"
+          args="standalone jsk_pcl/DepthImageCreator">
+      <remap from="~input" to="/xaxis_passthrough/output" />
+      <remap from="~info" to="/zed/left/camera_info_new" />
+    <rosparam>
+      use_approximate: true
+      max_queue_size: 3
+      max_pub_queue_size: 1
+      max_sub_queue_size: 1
+    </rosparam>
+    </node>
+  </group>
+  
+  <!-- dilate filter -->
+  <group if="$(arg dilate)">
+    <node name="dilate_filtered_image"
+          pkg="nodelet" type="nodelet"
+          args="standalone jsk_perception/DilateMaskImage">
+      <remap from="~input" to="/depth_image_creator/output_image" />
+      <rosparam>
+       method: 0
+       size: 3
+      </rosparam>
+    </node>
+  </group>
+  
+  <!-- Rviz -->  
+  <group if="$(arg gui)">
+    <node name="rviz"
+	  pkg="rviz" type="rviz"
+	  args="-d $(find pcl_processing)/config/depth_image_creator.rviz">
+    </node>
+  </group>
 
 </launch>

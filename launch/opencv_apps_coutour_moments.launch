@@ -1,8 +1,11 @@
 <launch>
 
+  <arg name="view" default="true" />
+  
   <node name="opencv_centroid" pkg="opencv_apps" type="contour_moments" output="screen">
-    <remap from="image" to="depth_image_creator/output_image" />
-    <param name="debug_view" value="false" />
+    <!-- <remap from="image" to="/depth_image_creator/output_image" /> -->
+    <remap from="image" to="/dilate_filtered_image/output" />
+    <param name="debug_view" value="$(arg view)" />
     <param name="use_camera_info" value="false" />
   </node>
   
