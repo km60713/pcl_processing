@@ -1,12 +1,12 @@
 <launch>
 
   <!-- centroid.py -->
-  <node pkg="pcl_processing" name="centroid" type="centroid.py" output="screen" />
+  <node pkg="pcl_processing" name="camshift_marker" type="camshift_marker.py" output="screen" />
 
   <!-- image_view2 -->  
   <node name="image_view2" pkg="image_view2" type="image_view2">
     <remap from="image" to="/zed/left/image_raw_color" />
-    <remap from="image_marker" to="/centroid_image/image_marker" />
+    <remap from="image_marker" to="/camshift_output/image_marker" />
   </node>
 
 </launch>

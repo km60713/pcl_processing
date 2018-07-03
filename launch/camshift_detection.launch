@@ -1,0 +1,38 @@
+<launch>
+
+  <arg name="gui" default="false" />
+  
+  <!-- path_through_filter -->
+  <include file="$(find pcl_processing)/launch/sample_path_through_filter.launch" />
+  
+  <!-- camera_info_publisher -->
+  <node pkg="pcl_processing" name="camera_info_publisher" type="camera_info_publisher" output="screen" />
+
+  <!-- depth_image_creator -->
+    <node name="depth_image_creator"
+          pkg="nodelet" type="nodelet"
+          args="standalone jsk_pcl/DepthImageCreator">
+      <remap from="~input" to="/xaxis_passthrough/output" />
+      <remap from="~info" to="/zed/left/camera_info_new" />
+    <rosparam>
+      use_approximate: true
+      max_queue_size: 3
+      max_pub_queue_size: 1
+      max_sub_queue_size: 1
+    </rosparam>
+    </node>
+  <!-- opencv_apps camshift -->  
+  <include file="$(find pcl_processing)/launch/opencv_apps_camshift.launch" />
+
+  <!-- image_view -->
+  <include file="$(find pcl_processing)/launch/image_view2.launch" />
+  
+  <!-- Rviz -->  
+  <group if="$(arg gui)">
+    <node name="rviz"
+	  pkg="rviz" type="rviz"
+	  args="-d $(find pcl_processing)/config/depth_image_creator.rviz">
+    </node>
+  </group>
+
+</launch>
